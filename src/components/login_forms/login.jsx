@@ -3,6 +3,7 @@ import Lottie from 'react-lottie';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Assuming you are using react-router for navigation
 import Login_anim from '../../assets/login.json';
+import { toast } from 'react-toastify';
 
 const Login = ({ handleToggle }) => {
   const [email, setEmail] = useState('');
@@ -43,7 +44,8 @@ const Login = ({ handleToggle }) => {
         const response = await axios.post('https://kharcha-calculator-backend.onrender.com/api/auth/login', { email, password });
         console.log('Login response:', response.data); // Log the response data
         // Handle successful login
-        alert('Login successful!');
+        // alert('Login successful!');
+        toast.success('Login successful!');
         // Store username in localStorage
         localStorage.setItem('username', response.data.result.username);
         console.log('Stored username in localStorage:', response.data.result.username); // Log the stored username
@@ -51,7 +53,8 @@ const Login = ({ handleToggle }) => {
         navigate('/home');
       } catch (error) {
         console.error('Login error:', error.response?.data?.message);
-        alert('Login failed. Please check your credentials and try again.');
+        toast.error('Login failed. Please check your credentials and try again.');
+        // alert('Login failed. Please check your credentials and try again.');
       }
     } else {
       setErrors(formErrors);
