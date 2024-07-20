@@ -84,8 +84,8 @@ const Navbar = () => {
                 });
 
                 localStorage.removeItem('username');
-                navigate('/');
                 toast.success('You have been logged out.');
+                navigate('/');
             } catch (error) {
                 console.error('Error logging out:', error);
                 Swal.fire('Error', 'Logout failed. Please try again.', 'error');
