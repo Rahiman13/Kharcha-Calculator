@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2'
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -60,21 +61,35 @@ const Navbar = () => {
 
     const handleLogout = async () => {
         if (!user) {
-            console.error('User is invalid.');
+            // console.error('User is invalid.');
+            toast.warn('User is invalid.')
             return;
         }
 
-        try {
-            await axios.post('https://kharcha-calculator-backend.onrender.com/api/auth/logout', {
-                userId: user._id,
-                logoutTime: new Date()
-            });
-            
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You will be logged out.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, logout!'
+        });
 
-            localStorage.removeItem('username');
-            navigate('/');
-        } catch (error) {
-            console.error('Error logging out:', error);
+        if (result.isConfirmed) {
+            try {
+                await axios.post('https://kharcha-calculator-backend.onrender.com/api/auth/logout', {
+                    userId: user._id,
+                    logoutTime: new Date()
+                });
+
+                localStorage.removeItem('username');
+                navigate('/');
+                toast.success('You have been logged out.');
+            } catch (error) {
+                console.error('Error logging out:', error);
+                Swal.fire('Error', 'Logout failed. Please try again.', 'error');
+            }
         }
     };
 
