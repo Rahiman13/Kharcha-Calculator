@@ -24,7 +24,7 @@ const Form = () => {
 
     return (
         <>
-            <section className="gradient-form w-full h-full bg-neutral-200 dark:bg-neutral-700">
+            <section className=" w-full h-full bg-[#F5F5F5]">
                 <div className="container mx-auto flex justify-center ">
                     <div className="flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
                         <div className="w-full h-full">

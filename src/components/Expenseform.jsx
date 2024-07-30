@@ -81,9 +81,9 @@ const ExpenseForm = () => {
           <label className='mb-2 text-lg font-semibold' htmlFor="expenseAmount">Expense Amount:</label>
           <input className='w-full mb-0 py-2 border rounded-lg pl-1' type="number" id="expenseAmount" value={expenseAmount} onChange={(e) => setExpenseAmount(e.target.value)} required /><br />
         </div>
-        <div className="">
+        <div>
           <label className='mb-2 text-lg font-semibold' htmlFor="description">Description:</label>
-          <textarea className='w-full mb-0 py-2 border rounded-lg pl-1' id="description" value={description} onChange={(e) => setDescription(e.target.value)} rows="4" cols="50"></textarea><br />
+          <textarea className='w-full mb-0 py-2 border rounded-lg pl-1' id="description" value={description} onChange={(e) => setDescription(e.target.value)} rows="4"></textarea>
         </div>
         <button type="submit" className='bg-blue-500 font-semibold text-white px-4 py-2 rounded-md shadow-md transform transition-transform duration-100 ease-in-out hover:scale-105 active:scale-95'>Add Expense</button>
       </form>

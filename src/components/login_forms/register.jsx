@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import Lottie from 'react-lottie';
 import axios from 'axios';
 import Register_anim from '../../assets/register.json';
+import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = ({ handleToggle }) => {
     const [username, setUsername] = useState('');
@@ -11,6 +14,7 @@ const Register = ({ handleToggle }) => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errors, setErrors] = useState({});
+    const [role, setRole] = useState('user');
 
     const defaultOptions = {
         loop: true,
@@ -44,32 +48,37 @@ const Register = ({ handleToggle }) => {
     const validateForm = () => {
         const errors = {};
         if (!email) {
-          errors.email = 'Email is required';
+            errors.email = 'Email is required';
         } else if (!/\S+@\S+\.\S+/.test(email)) {
-          errors.email = 'Email is invalid';
+            errors.email = 'Email is invalid';
         }
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
         if (!password) {
-          errors.password = 'Password is required';
+            errors.password = 'Password is required';
         } else if (!passwordRegex.test(password)) {
-          errors.password = 'Password must be at least 6 characters, and include at least one uppercase letter, one lowercase letter, one number, and one special character';
+            errors.password = 'Password must be at least 6 characters, and include at least one uppercase letter, one lowercase letter, one number, and one special character';
         }
         if (!username) errors.username = 'Username is required';
         if (!firstName) errors.firstName = 'First name is required';
         if (!lastName) errors.lastName = 'Last name is required';
         return errors;
-      };
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formErrors = validateForm();
         if (Object.keys(formErrors).length === 0) {
             try {
+                if (email == 'rahimanshaik13@gmail.com') {
+                    setRole('admin');
+                } else {
+                    setRole('user');
+                }
                 const existingUserResponse = await axios.get(`https://kharcha-calculator-backend.onrender.com/api/auth/checkuser`, {
                     params: { email },
                 });
                 if (existingUserResponse.data.exists) {
-                    alert('User already exists');
+                    Swal.fire('error', 'User already exists');
                     // Clear the input fields
                     setUsername('');
                     setFirstName('');
@@ -91,7 +100,7 @@ const Register = ({ handleToggle }) => {
                 console.log(response.data);
 
                 // Show success alert
-                alert('Registration successful!');
+                toast.success('Registration successful!');
 
                 // Clear the input fields
                 setUsername('');
@@ -115,9 +124,9 @@ const Register = ({ handleToggle }) => {
     return (
         <section className="h-screen container">
             <div className="container mx-auto p-10">
-                <div className="flex h-full flex-wrap items-center justify-center text-gray-800 dark:text-gray-200">
-                    <div className="w-full max-w-4xl">
-                        <div className="block rounded-lg bg-white shadow-lg dark:bg-gray-800">
+                <div className="flex h-full flex-wrap items-center justify-center ">
+                    <div className="w-full max-w-4xl border-2 rounded-lg border-black">
+                        <div className="block rounded-lg bg-white shadow-lg dark:bg-[#030637]">
                             <div className="lg:flex lg:flex-wrap">
                                 <div
                                     className="flex items-center justify-center w-full lg:w-6/12 rounded-b-lg rounded-t-lg lg:rounded-tr-none lg:rounded-br-none"
@@ -130,7 +139,7 @@ const Register = ({ handleToggle }) => {
                                     </div>
                                 </div>
                                 <div className="w-full lg:w-6/12 px-4 md:px-6 lg:px-8 py-6 md:py-8 lg:py-10">
-                                    <form onSubmit={handleSubmit} className="space-y-4">
+                                    <form onSubmit={handleSubmit} className="space-y-5">
                                         <p className="mb-4 text-center text-5xl font-semibold mb-8">Register</p>
                                         <div className="relative mb-4">
                                             <input
@@ -194,9 +203,15 @@ const Register = ({ handleToggle }) => {
                                         </div>
                                         <div className="mb-12 pb-1 pt-1 text-center">
                                             <button
-                                                className="mb-3 inline-block w-full rounded border border-transparent hover:border hover:border-white px-6 py-2 text-md font-medium uppercase leading-normal text-white shadow-dark-3 transition duration-150 ease-in-out hover:shadow-dark-2 focus:shadow-dark-2 focus:outline-none focus:ring-0 active:shadow-dark-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                                                className="inline-block w-full rounded-lg border-2 border-white px-6 py-2 text-sm font-medium uppercase leading-normal text-white transition duration-300 ease-in-out transform hover:scale-105 focus:scale-105 active:scale-100 focus:outline-none focus:ring-0 shadow-lg hover:shadow-xl"
                                                 type="submit"
-                                                style={{ background: 'linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)' }}
+
+                                                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)'}
+                                                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                                onFocus={(e) => e.currentTarget.style.background = 'linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)'}
+                                                onBlur={(e) => e.currentTarget.style.background = 'linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)'}
+                                                onMouseDown={(e) => e.currentTarget.style.background = 'linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)'}
+                                                onMouseUp={(e) => e.currentTarget.style.background = 'linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)'}
                                             >
                                                 Register
                                             </button>
@@ -205,8 +220,15 @@ const Register = ({ handleToggle }) => {
                                             <p className="mb-0">Already have an account?</p>
                                             <button
                                                 type="button"
-                                                className="inline-block rounded border-2 border-danger px-6 py-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-danger-50/50 hover:text-danger-600 focus:border-danger-600 focus:bg-danger-50/50 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-rose-950 dark:focus:bg-rose-950"
+                                                className="inline-block rounded-lg border-2 border-white px-6 py-2 text-xs font-medium uppercase leading-normal text-white transition duration-300 ease-in-out transform hover:scale-105 focus:scale-105 active:scale-100 focus:outline-none focus:ring-0 shadow-lg hover:shadow-xl"
                                                 onClick={handleToggle}
+
+                                                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)'}
+                                                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                                onFocus={(e) => e.currentTarget.style.background = 'linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)'}
+                                                onBlur={(e) => e.currentTarget.style.background = 'linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)'}
+                                                onMouseDown={(e) => e.currentTarget.style.background = 'linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)'}
+                                                onMouseUp={(e) => e.currentTarget.style.background = 'linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)'}
                                             >
                                                 Login
                                             </button>

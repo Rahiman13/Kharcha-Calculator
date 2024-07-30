@@ -7,6 +7,7 @@ import Navbar from './Navbar';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { FaTrash, FaEdit } from 'react-icons/fa';
+import 'animate.css'; // Import animate.css for animations
 
 const Home = () => {
   const [monthlyData, setMonthlyData] = useState({});
@@ -14,7 +15,7 @@ const Home = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentExpense, setCurrentExpense] = useState(null);
   const [currentMonth, setCurrentMonth] = useState('');
-  const username = localStorage.getItem('username'); // Replace with the actual username
+  const username = localStorage.getItem('username');
 
   useEffect(() => {
     const fetchMonthlyData = async () => {
@@ -22,7 +23,6 @@ const Home = () => {
         const response = await axios.get(`https://kharcha-calculator-backend.onrender.com/api/monthlydata/${username}`);
         const data = response.data;
 
-        // Transform the fetched data into the required format
         const formattedData = {};
         data.forEach(monthData => {
           formattedData[monthData.month] = monthData.data;
@@ -149,9 +149,10 @@ const Home = () => {
   };
 
   const generateRandomColor = () => {
-    const colors = ['#34568B', '#FF6F61', '#6B5B95', '#88B04B', '#C3447A', '#955251', '#B565A7', '#DD4124', '#009B77'];
+    const colors = ['#2C3E50', '#E74C3C', '#8E44AD', '#16A085', '#F39C12', '#D35400', '#2980B9', '#27AE60', '#C0392B', '#7F8C8D'];
     return colors[Math.floor(Math.random() * colors.length)];
   };
+  
 
   const handleEditClick = (month, expense) => {
     setCurrentMonth(month);
@@ -171,18 +172,18 @@ const Home = () => {
           <div className="mr-[20px]">
             <ExpenseForm addExpense={addExpense} />
           </div>
-          <div className="flex-1 bg-[#f9f9f9] p-[20px] rounded-lg">
-            <h2 className='text-3xl text-center mb-2 italic'>Month wise Expenses</h2>
-            <div className={totalBalance < 10000 ? "blinker" : ""}>
-              <h3 className='text-black text-lg mb-2'>Total Savings: <span className="text-md font-bold">₹ {totalBalance}</span></h3>
+          <div className="flex-1 bg-[#f9f9f9] p-[20px] rounded-lg animate__animated animate__fadeIn animate__delay-1s">
+            <h2 className='text-3xl text-center mb-2 italic animate__animated animate__fadeIn animate__delay-2s'>Month wise Expenses</h2>
+            <div className={totalBalance < 10000 ? "blinker animate__animated animate__flash" : ""}>
+              <h3 className='text-black text-lg mb-2 animate__animated animate__fadeIn'>Total Savings: <span className="text-md font-bold">₹ {totalBalance}</span></h3>
             </div>
-            <hr className='text-black'/>
+            <hr className='text-black animate__animated animate__fadeIn'/>
             <div className='overflow-y-auto max-h-[550px]'>
               {Object.entries(monthlyData).map(([month, expenses]) => (
-                <div className='box overflow-x' key={month} style={{ backgroundColor: generateRandomColor() }}>
-                  <div className='box-content relative '>
-                    <h3 className='month  font-semibold'>{month}</h3>
-                    <p className='mt-2 absolute right-2 top-2 text-lg font-semibold '>Salary: ₹ {expenses[0]?.salary || 0}</p>
+                <div className='box overflow-x animate__animated animate__fadeIn animate__delay-1s' key={month} style={{ backgroundColor: generateRandomColor() }}>
+                  <div className='box-content relative'>
+                    <h3 className='month font-semibold'>{month}</h3>
+                    <p className='mt-2 absolute right-2 top-2 text-lg font-semibold'>Salary: ₹ {expenses[0]?.salary || 0}</p>
                     <hr />
                     <table className='mt-2 overflow-y-auto max-h-[300px]'>
                       <thead>
@@ -196,20 +197,20 @@ const Home = () => {
                       </thead>
                       <tbody>
                         {expenses.map((expense, index) => (
-                          <tr key={index}>
+                          <tr key={index} className="animate__animated animate__fadeIn animate__delay-1s">
                             <td>{new Date(expense.date).toLocaleDateString()}</td>
                             <td>{expense.reason}</td>
                             <td>{expense.expense}</td>
                             <td>{expense.description}</td>
                             <td className='space-x-2'>
-                              <button className='edit' onClick={() => handleEditClick(month, expense)}><FaEdit /></button>
-                              <button onClick={() => deleteExpense(month, expense._id)}><FaTrash /></button>
+                              <button className='edit animate__animated animate__pulse animate__delay-2s' onClick={() => handleEditClick(month, expense)}><FaEdit /></button>
+                              <button className='animate__animated animate__pulse animate__delay-2s' onClick={() => deleteExpense(month, expense._id)}><FaTrash /></button>
                             </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
-                    <p className='font-bold text-lg'>Saving Amount: ₹ {calculateSaving(month)}</p>
+                    <p className='font-bold text-lg animate__animated animate__fadeIn animate__delay-2s'>Saving Amount: ₹ {calculateSaving(month)}</p>
                   </div>
                 </div>
               ))}

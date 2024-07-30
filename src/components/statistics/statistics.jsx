@@ -95,46 +95,48 @@ const Statistics = () => {
             <div className="p-6">
                 <h1 className="text-3xl font-bold text-center mb-8">Monthly Financial Dashboard</h1>
 
-                <div className="flex flex-col md:flex-row gap-8 mb-8">
-                    <div className="w-full md:w-1/3 p-4 bg-white border border-gray-200 rounded-lg shadow-md">
-                        <h2 className="text-2xl font-semibold mb-4">Savings Overview</h2>
-                        <div className="flex justify-center">
+                <div className="flex flex-col md:flex-row gap-4 pr-2 mb-8">
+                    <div className="w-full md:w-1/3 px-2  py-2 bg-white border border-gray-200 rounded-lg shadow-md">
+                        <div className="flex justify-center ">
                             <Doughnut data={doughnutData} options={{ responsive: true, maintainAspectRatio: false }} />
                         </div>
+                        <h2 className="text-lg text-center font-semibold mb-4">Savings Overview</h2>
                     </div>
 
-                    <div className="w-full md:w-1/3 p-4 bg-white border border-gray-200 rounded-lg shadow-md">
-                        <h2 className="text-2xl font-semibold mb-4">Expenses and Salary</h2>
-                        <div className="flex justify-center">
+                    <div className="w-full md:w-1/3 px-2  py-2 bg-white border border-gray-200 rounded-lg shadow-md">
+                        <div className="flex justify-center ">
                             <Bar data={barData} options={{ responsive: true, maintainAspectRatio: false }} />
                         </div>
+                        <h2 className="text-lg text-center font-semibold mb-4">Expenses and Salary</h2>
                     </div>
 
-                    <div className="w-full md:w-1/3 p-4 bg-white border border-gray-200 rounded-lg shadow-md">
-                        <h2 className="text-2xl font-semibold mb-4">Monthly Expenses</h2>
-                        <div className="flex justify-center">
+                    <div className="w-full md:w-1/3 px-2  py-2 bg-white border border-gray-200 rounded-lg shadow-md">
+                        <div className="flex justify-center ">
                             <Line data={lineData} options={{ responsive: true, maintainAspectRatio: false }} />
                         </div>
+                        <h2 className="text-lg text-center font-semibold mb-4">Monthly Expenses</h2>
                     </div>
                 </div>
 
-                <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ">
                     {Object.entries(monthlyData).map(([month, expenses]) => (
-                        <div className="bg-white border border-gray-200 rounded-lg shadow-md p-4" key={month}>
-                            <h2 className="text-xl font-semibold mb-2">{month}</h2>
-                            <p className="text-gray-700"><strong>Salary:</strong>     <span className="text-md font-bold">₹</span> {expenses[0]?.salary || 0}</p>
-                            <p className="text-gray-700"><strong>Total Expenses:</strong>     <span className="text-md font-bold">₹</span> {expenses.reduce((acc, expense) => acc + expense.expense, 0)}</p>
-                            <p className="text-gray-700"><strong>Saving Amount:</strong>     <span className="text-md font-bold">₹</span> {calculateSaving(month)}</p>
-                            <ul className="mt-4 space-y-2">
-                                {expenses.map((expense, index) => (
-                                    <li className="border-t border-gray-200 pt-2" key={index}>
-                                        <p className="text-gray-600"><strong>Date:</strong> {new Date(expense.date).toLocaleDateString()}</p>
-                                        <p className="text-gray-600"><strong>Reason:</strong> {expense.reason}</p>
-                                        <p className="text-gray-600"><strong>Amount:</strong>     <span className="text-md font-bold">₹</span> {expense.expense}</p>
-                                        <p className="text-gray-600"><strong>Description:</strong> {expense.description}</p>
-                                    </li>
-                                ))}
-                            </ul>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-md  overflow-y-auto max-h-[280px]" key={month}>
+                            <div className="p-3">
+                                <h2 className="text-2xl font-semibold mb-2 font-cursive">{month}</h2>
+                                <p className="text-gray-700"><strong>Salary:</strong>     <span className="text-md font-bold">₹</span> {expenses[0]?.salary || 0}</p>
+                                <p className="text-gray-700"><strong>Total Expenses:</strong>     <span className="text-md font-bold">₹</span> {expenses.reduce((acc, expense) => acc + expense.expense, 0)}</p>
+                                <p className="text-gray-700"><strong>Saving Amount:</strong>     <span className="text-md font-bold">₹</span> {calculateSaving(month)}</p>
+                                <ul className="mt-4 space-y-2">
+                                    {expenses.map((expense, index) => (
+                                        <li className="border-t border-gray-200 pt-2" key={index}>
+                                            <p className="text-gray-600"><strong>Date:</strong> {new Date(expense.date).toLocaleDateString()}</p>
+                                            <p className="text-gray-600"><strong>Reason:</strong> {expense.reason}</p>
+                                            <p className="text-gray-600"><strong>Amount:</strong>     <span className="text-md font-bold">₹</span> {expense.expense}</p>
+                                            <p className="text-gray-600"><strong>Description:</strong> {expense.description}</p>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
                     ))}
                 </div>
